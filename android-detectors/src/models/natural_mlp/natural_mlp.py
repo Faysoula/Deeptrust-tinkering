@@ -111,7 +111,7 @@ class NaturalMLP(BaseMLP, BaseDREBIN):
 
                     # Compute the loss
                     loss = self.loss_fn(outputs, labels)
-                    train_loss += loss
+                    train_loss += loss.detach()
                     # Backward pass
                     loss.backward()
                     # Optimize

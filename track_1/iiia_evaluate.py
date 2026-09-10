@@ -75,7 +75,7 @@ def iiia_evaluate(classifier):
     acc, prec, rec, spec, f1_score, fp_rate = _compute_metrics(gt_labels, y_pred)
     fp_metrics = {'fpos_metrics': {'acc': acc, 'prec': prec, 'rec': rec,
      'spec': spec, 'f1': f1_score, 'fpr': fp_rate}}
-    logging.log.info(f"Metrics on the fp set: {fp_metrics}")
+    logging.info(f"Metrics on the fp set: {fp_metrics}")
 
     ## Evaluate the classifier on the set of malware samples
     malware_features = load_features(
@@ -86,7 +86,7 @@ def iiia_evaluate(classifier):
     acc, prec, rec, spec, f1_score, fp_rate = _compute_metrics(gt_labels, y_pred)
     pos_metrics = {'pos_metrics': {'acc': acc, 'prec': prec, 'rec': rec,
      'spec': spec, 'f1': f1_score, 'fpr': fp_rate}}
-    log.info(f"Metrics on the pos set: {pos_metrics}")
+    logging.info(f"Metrics on the pos set: {pos_metrics}")
 
     ## Evaluate the classifier on the set of adversarial samples
     attack = FeatureSpaceAttack(classifier=classifier,
@@ -112,7 +112,7 @@ def iiia_evaluate(classifier):
     adv_metrics = {}
     for n_feats in [100]: # [25, 50, 100]:
 
-        logging.log.info(f"Running attack with a maximum of {n_feats} feature changes")
+        logging.info(f"Running attack with a maximum of {n_feats} feature changes")
 
         goodware_features = (
             sample for sample, label in zip(load_features(
@@ -121,7 +121,7 @@ def iiia_evaluate(classifier):
         malware_features = load_features(
             os.path.join(base_path, "../data/test_set_adv_features.zip"))
 
-        logging.log.info("Reproducibility check: "
+        logging.info("Reproducibility check: "
                  "First 10 indices of the random malware subset: %s" % indices[:10])
         # Convert malware_features to a generator class
         malware_features = MalwareFeatureGenerator(malware_features, indices)
@@ -138,7 +138,7 @@ def iiia_evaluate(classifier):
         acc, prec, rec, spec, f1_score, fp_rate = _compute_metrics(gt_labels, y_pred)
         adv_metrics[f'adv_metrics_{n_feats}'] = {'acc': acc, 'prec': prec, 'rec': rec,
             'spec': spec, 'f1': f1_score, 'fpr': fp_rate}
-        logging.log.info(f"Metrics on the adv set with {n_feats} feature changes: {adv_metrics}")
+        logging.info(f"Metrics on the adv set with {n_feats} feature changes: {adv_metrics}")
 
         metrics = {**fp_metrics, **pos_metrics, **adv_metrics}
 

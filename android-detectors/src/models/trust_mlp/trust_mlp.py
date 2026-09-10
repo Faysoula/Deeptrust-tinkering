@@ -288,7 +288,7 @@ class TrustMLP(nn.Module, BaseDREBIN):
         # Initialize delta to vector of zeros
         if self.perturbation_scheme == 'accumulate':
             delta_global = torch.zeros(
-                self.batch_size, self.in_dim, requires_grad=False, device='mps')
+                self.batch_size, self.in_dim, requires_grad=False, device=self.device)
 
         for epoch in range(1, (self.max_epochs // self.m) + 1):
             with tqdm(iterable=self.trainloader, total=len(self.trainloader),
@@ -303,7 +303,7 @@ class TrustMLP(nn.Module, BaseDREBIN):
 
                     if self.perturbation_scheme == 'reset':
                         delta_global = torch.zeros(
-                            self.batch_size, self.in_dim, requires_grad=False, device='mps')
+                            self.batch_size, self.in_dim, requires_grad=False, device=self.device)
 
                     for _ in range(self.m):
                         # Clone to reset the gradients
@@ -336,7 +336,7 @@ class TrustMLP(nn.Module, BaseDREBIN):
 
                         # Compute the loss
                         loss = self.loss_fn(outputs, labels)
-                        train_loss += loss
+                        train_loss += loss.detach()
 
                         # Backward pass
                         self.optimizer.zero_grad()
@@ -384,7 +384,7 @@ class TrustMLP(nn.Module, BaseDREBIN):
 
                                 # Update delta_global
                                 delta_temp = torch.zeros(self.batch_size, self.in_dim, requires_grad=False,
-                                                         device='mps')
+                                                         device=self.device)
                                 delta_temp.scatter_(
                                     1, feat_indices.to(self.device), sign_indices.to(self.device))
 

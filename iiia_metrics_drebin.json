@@ -1,0 +1,26 @@
+{
+  "fpos_metrics": {
+    "acc": 0.9964,
+    "prec": 0.0,
+    "rec": NaN,
+    "spec": 0.9964,
+    "f1": NaN,
+    "fpr": 0.0036
+  },
+  "pos_metrics": {
+    "acc": 0.7728,
+    "prec": 1.0,
+    "rec": 0.7728,
+    "spec": NaN,
+    "f1": 0.8718,
+    "fpr": NaN
+  },
+  "adv_metrics_100": {
+    "acc": 0.0,
+    "prec": NaN,
+    "rec": 0.0,
+    "spec": NaN,
+    "f1": NaN,
+    "fpr": NaN
+  }
+}
